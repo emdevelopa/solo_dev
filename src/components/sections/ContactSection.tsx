@@ -3,9 +3,9 @@ import { Github, Linkedin, Twitter, Mail } from "lucide-react";
 const ContactSection = () => {
   const socialLinks = [
     { icon: Github, label: "GitHub", href: "https://github.com/emdevelopa" },
-    { icon: Linkedin, label: "LinkedIn", href: "#" },
-    { icon: Twitter, label: "Twitter", href: "#" },
-    { icon: Mail, label: "Email", href: "mailto:hello@example.com" },
+  //  { icon: Linkedin, label: "LinkedIn", href: "#" },
+    { icon: Twitter, label: "Twitter", href: "https://x.com/Emwrld999" },
+    { icon: Mail, label: "Email", href: "mailto:olatunbossemma17@gmail.com" },
   ];
 
   return (
