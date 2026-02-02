@@ -5,7 +5,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Logo */}
           <div className="font-heading font-bold text-xl tracking-tight">
-            <span className="bg-background text-foreground px-2 py-1">DEV</span>
+            <span className="bg-background text-foreground px-2 py-1">Solo_DEV</span>
           </div>
 
           {/* Copyright */}
