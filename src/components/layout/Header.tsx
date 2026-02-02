@@ -19,7 +19,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <a href="#" className="font-heading font-bold text-xl md:text-2xl tracking-tight">
-            <span className="bg-foreground text-background px-2 py-1">DEV</span>
+            <span className="bg-foreground text-background px-2 py-1">Solo_DEV</span>
           </a>
 
           {/* Desktop Navigation */}

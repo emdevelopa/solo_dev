@@ -5,40 +5,42 @@ import { ExternalLink } from "lucide-react";
 const ProjectsSection = () => {
   const projects = [
     {
-      title: "DeFi Staking Platform",
-      category: "Smart Contract",
+      title: "CUSTOSDIRETRIZ",
+      category: "Web App",
       color: "bg-accent",
-      problem: "Users needed a secure way to stake tokens and earn yields",
-      approach: "Built audited Solidity contracts with Hardhat, integrated with React frontend",
-      outcome: "Processed $2M+ in transactions with zero security incidents",
-      tags: ["Solidity", "Hardhat", "React", "Ethers.js"],
+      problem: "Legal professionals needed a secure platform for creating blockchain-based agreements",
+      approach: "Built the frontend with Next.js and Vite, integrated with Python Django backend and MySQL database",
+      outcome: "Live platform enabling secure, blockchain-verified legal agreements",
+      tags: ["Next.js", "Vite", "Python", "Django", "MySQL"],
+      url: "https://www.custosdiretriz.com/",
     },
     {
-      title: "E-Commerce Mobile App",
-      category: "Mobile App",
+      title: "SWIFTCONNECT",
+      category: "Web App",
       color: "bg-foreground",
-      problem: "Retail business needed cross-platform mobile presence",
-      approach: "React Native with Material UI, integrated payments and real-time inventory",
-      outcome: "50K+ downloads, 4.8 star rating, 30% increase in sales",
-      tags: ["React Native", "Material UI", "Stripe", "Firebase"],
+      problem: "Users needed a modern, intuitive finance management platform",
+      approach: "Developed frontend interface with Next.js and Vite, Python Django backend with MySQL",
+      outcome: "Fully functional finance web app with dashboard and transaction management",
+      tags: ["Next.js", "Vite", "Python", "Django", "MySQL"],
+      url: "https://swiftconnect-frontend.vercel.app/dashboard",
     },
     {
-      title: "SaaS Dashboard",
+      title: "MOVIEBOX",
       category: "Web App",
       color: "bg-primary",
-      problem: "Analytics company needed a powerful data visualization platform",
-      approach: "Next.js with TypeScript, custom charting, real-time data streaming",
-      outcome: "Reduced load times by 60%, improved user retention by 40%",
-      tags: ["Next.js", "TypeScript", "Tailwind", "D3.js"],
+      problem: "Movie enthusiasts needed a discovery and recommendation platform",
+      approach: "Built full-stack solution with React.js frontend, Tailwind CSS styling, and TMDB API integration",
+      outcome: "Complete movie discovery app with search, recommendations, and detailed movie info",
+      tags: ["React.js", "Tailwind CSS", "TMDB API"],
     },
     {
-      title: "NFT Marketplace",
+      title: "Custom ERC-20 Token",
       category: "Smart Contract",
       color: "bg-secondary",
-      problem: "Artists needed a platform to mint and sell digital artwork",
-      approach: "ERC-721 contracts with Foundry, lazy minting, gasless transactions",
-      outcome: "10K+ NFTs minted, featured in major crypto publications",
-      tags: ["Foundry", "Solidity", "IPFS", "Vue"],
+      problem: "Needed to create and deploy a custom token on the blockchain",
+      approach: "Developed ERC-20 token using Solidity, wrote comprehensive test suite with Hardhat",
+      outcome: "Successfully deployed token with full test coverage",
+      tags: ["Solidity", "Hardhat", "Ethereum", "Testing"],
     },
   ];
 
@@ -103,11 +105,15 @@ const ProjectsSection = () => {
               </div>
 
               {/* Project Footer */}
-              <div className="px-6 py-4 bg-muted border-t-[3px] border-foreground">
-                <BrutalButton size="sm" variant="outline" className="w-full">
-                  View Case Study <ExternalLink className="ml-2 h-4 w-4" />
-                </BrutalButton>
-              </div>
+              {(project as any).url && (
+                <div className="px-6 py-4 bg-muted border-t-[3px] border-foreground">
+                  <a href={(project as any).url} target="_blank" rel="noopener noreferrer">
+                    <BrutalButton size="sm" variant="outline" className="w-full">
+                      View Live <ExternalLink className="ml-2 h-4 w-4" />
+                    </BrutalButton>
+                  </a>
+                </div>
+              )}
             </BrutalCard>
           ))}
         </div>
