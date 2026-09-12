@@ -1,130 +1,268 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Search, Compass, Palette, Code2, RefreshCw, CheckCircle } from "lucide-react";
-import { fadeInUp, staggerContainer, viewportOnce } from "@/lib/motion";
+import { IconCalendar, IconCheck, IconArrowUpRight } from "@tabler/icons-react";
 
-const ProcessSection = () => {
-  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
+interface CalendarTile {
+  day: string;
+  date: string;
+  badge?: string;
+  badgeBg?: string;
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
+  isCircled?: boolean;
+  theme: {
+    bg: string;
+    text: string;
+    dateText: string;
+    metaText: string;
+  };
+  details: string[];
+}
 
-  const steps = [
-    {
-      number: "01",
-      title: "Research",
-      icon: Search,
-      color: "bg-primary text-primary-foreground",
-      description: "Deep dive into problem space, user journeys, edge cases, and architectural constraints.",
-      deliverable: "Tech Spec & Architecture",
+const calendarTiles: CalendarTile[] = [
+  {
+    day: "THU",
+    date: "01",
+    badge: "PHASE 01",
+    badgeBg: "bg-[#281D19]",
+    badgeText: "text-[#F4F1EA]",
+    title: "RESEARCH",
+    subtitle: "Discovery & Tech Spec",
+    theme: {
+      bg: "bg-[#F4F1EA]",
+      text: "text-[#281D19]",
+      dateText: "text-[#281D19]",
+      metaText: "text-[#7C5A48]",
     },
-    {
-      number: "02",
-      title: "Define",
-      icon: Compass,
-      color: "bg-secondary text-secondary-foreground",
-      description: "Milestone scoping, data schemas, smart contract security surface, and API contracts.",
-      deliverable: "Roadmap & Schemas",
+    details: [
+      "Cryptographic security boundaries",
+      "Database schema query modeling",
+      "OpenAPI spec contract freeze",
+    ],
+  },
+  {
+    day: "FRI",
+    date: "02",
+    badge: "PHASE 02",
+    badgeBg: "bg-[#281D19]",
+    badgeText: "text-[#F4F1EA]",
+    title: "DEFINE",
+    subtitle: "Milestones & Schemas",
+    theme: {
+      bg: "bg-[#DFD8CE]",
+      text: "text-[#281D19]",
+      dateText: "text-[#281D19]",
+      metaText: "text-[#7C5A48]",
     },
-    {
-      number: "03",
-      title: "Design",
-      icon: Palette,
-      color: "bg-accent text-accent-foreground",
-      description: "Component hierarchies, wireframes, state management flows, and token design system.",
-      deliverable: "UI Components & States",
+    details: [
+      "Deterministic state transitions",
+      "Smart contract ABI interfaces",
+      "Strict TypeScript validation models",
+    ],
+  },
+  {
+    day: "SAT",
+    date: "03",
+    badge: "PHASE 03",
+    badgeBg: "bg-[#7A361D]",
+    badgeText: "text-[#F4F1EA]",
+    title: "DESIGN",
+    subtitle: "UI Systems & State",
+    theme: {
+      bg: "bg-[#C46D4B]",
+      text: "text-[#FDFBF7]",
+      dateText: "text-[#FDFBF7]",
+      metaText: "text-[#FDFBF7]/85",
     },
-    {
-      number: "04",
-      title: "Build",
-      icon: Code2,
-      color: "bg-foreground text-background",
-      description: "Test-driven implementation with automated unit/integration tests and CI/CD pipelines.",
-      deliverable: "Production Release",
+    details: [
+      "Modular design tokens system",
+      "Optimistic UI & pending states",
+      "Keyboard accessibility standards",
+    ],
+  },
+  {
+    day: "THU",
+    date: "08",
+    badge: "PHASE 04",
+    badgeBg: "bg-[#3D2C26]",
+    badgeText: "text-[#E6B198]",
+    title: "BUILD",
+    subtitle: "Test-Driven Execution",
+    theme: {
+      bg: "bg-[#281D19]",
+      text: "text-[#F4F1EA]",
+      dateText: "text-[#F4F1EA]",
+      metaText: "text-[#E6B198]",
     },
-    {
-      number: "05",
-      title: "Iterate",
-      icon: RefreshCw,
-      color: "bg-primary text-primary-foreground",
-      description: "Telemetry analysis, performance audits, user feedback incorporation, and optimization.",
-      deliverable: "Continuous Scalability",
+    details: [
+      "100% test coverage (Vitest / Foundry)",
+      "Static analysis with Slither & ESLint",
+      "Automated branch deployment preview",
+    ],
+  },
+  {
+    day: "FRI",
+    date: "09",
+    isCircled: true,
+    title: "PRODUCTION RELEASE",
+    subtitle: "Audited & Verified Deployment",
+    theme: {
+      bg: "bg-[#F4F1EA]",
+      text: "text-[#281D19]",
+      dateText: "text-[#281D19]",
+      metaText: "text-[#C83838]",
     },
-  ];
+    details: [
+      "Immutable contract verification",
+      "Automated CI/CD release gate",
+      "Zero-downtime live traffic switch",
+    ],
+  },
+  {
+    day: "SAT",
+    date: "10",
+    badge: "PHASE 05",
+    badgeBg: "bg-[#3A493D]",
+    badgeText: "text-[#D8E6DA]",
+    title: "SCALE & ITERATE",
+    subtitle: "Telemetry & Performance SLAs",
+    theme: {
+      bg: "bg-[#546857]",
+      text: "text-[#F7F5F0]",
+      dateText: "text-[#F7F5F0]",
+      metaText: "text-[#D8E6DA]",
+    },
+    details: [
+      "Core Web Vitals monitoring",
+      "Gas optimization loops",
+      "Continuous feature iterations",
+    ],
+  },
+];
+
+export const ProcessSection = () => {
+  const [selectedTile, setSelectedTile] = useState<number | null>(null);
 
   return (
-    <section id="process" className="py-20 md:py-32 border-b-[3px] border-foreground bg-muted relative overflow-hidden">
-      <div className="container">
+    <section className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="mb-16 text-center max-w-2xl mx-auto"
-        >
-          <motion.div variants={fadeInUp} className="inline-block mb-4">
-            <span className="bg-accent text-accent-foreground px-4 py-1.5 font-heading font-bold text-xs uppercase tracking-wider shadow-brutal border-[2px] border-foreground">
-              Execution Strategy
+        <div className="mb-12 sm:mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div>
+            <span className="text-xs font-mono uppercase tracking-widest text-[#7C5A48] font-semibold block mb-2">
+              Sprint Calendar / 05
             </span>
-          </motion.div>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-[1.05] tracking-tight"
-          >
-            HOW I <span className="bg-primary px-3 py-1 border-[3px] border-foreground shadow-brutal inline-block">DELIVER</span>
-          </motion.h2>
-          <motion.p variants={fadeInUp} className="mt-4 font-body text-muted-foreground text-sm sm:text-base">
-            Disciplined workflow engineered for speed, predictability, and zero regression.
-          </motion.p>
-        </motion.div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#281D19]">
+              How I Deliver.
+            </h2>
+            <p className="text-sm sm:text-base text-[#281D19]/70 mt-3 max-w-xl">
+              An all-in-one delivery calendar. Each phase mapped out as a concrete, deterministic milestone.
+            </p>
+          </div>
 
-        {/* Process Steps Cards */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 relative"
-        >
-          {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              variants={fadeInUp}
-              whileHover={{ y: -8, scale: 1.02 }}
-              onHoverStart={() => setHoveredStep(index)}
-              onHoverEnd={() => setHoveredStep(null)}
-              className="border-[3px] border-foreground bg-card shadow-brutal-lg flex flex-col justify-between overflow-hidden transition-all"
-            >
-              {/* Step Header */}
-              <div>
-                <div className={`${step.color} px-4 py-5 text-center border-b-[3px] border-foreground relative`}>
-                  <span className="font-heading font-black text-4xl md:text-5xl block">
-                    {step.number}
-                  </span>
-                  <div className="mt-2 flex items-center justify-center">
-                    <span className="p-1.5 bg-background text-foreground border-[2px] border-foreground shadow-brutal inline-block">
-                      <step.icon className="w-5 h-5 stroke-[2.5]" />
+          <div className="flex items-center gap-2 font-mono text-xs text-[#281D19] bg-[#DFD8CE] px-4 py-2 rounded-xl select-none self-start sm:self-auto">
+            <IconCalendar className="w-4 h-4" />
+            <span className="font-bold">DELIVERY SPRINT · 10-DAY SPRINT CYCLE</span>
+          </div>
+        </div>
+
+        {/* All-In-One Calendar Grid (Exact Style from Reference Screenshot) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch select-none">
+          {calendarTiles.map((tile, idx) => {
+            const isSelected = selectedTile === idx;
+            return (
+              <div
+                key={tile.date}
+                onClick={() => setSelectedTile(isSelected ? null : idx)}
+                className={`${tile.theme.bg} ${tile.theme.text} rounded-[28px] sm:rounded-[34px] p-7 sm:p-8 min-h-[280px] sm:min-h-[320px] flex flex-col justify-between cursor-pointer transition-transform duration-300 hover:scale-[1.01]`}
+              >
+                {/* Top Row: Badge on Left + Day/Date on Right (Exact layout as reference) */}
+                <div className="flex items-start justify-between gap-3">
+                  {/* Event / Phase Tag */}
+                  <div>
+                    {tile.badge && (
+                      <span
+                        className={`${tile.badgeBg} ${tile.badgeText} text-xs font-mono font-bold px-3 py-1.5 rounded-lg inline-block uppercase tracking-wider`}
+                      >
+                        {tile.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Day of Week & Bold Date Number in the Corner */}
+                  <div className="flex flex-col items-end leading-none">
+                    <span className="text-xs sm:text-sm font-black tracking-wider uppercase font-mono opacity-90">
+                      {tile.day}
+                    </span>
+                    <span className={`text-4xl sm:text-5xl font-black tracking-tight mt-1 ${tile.theme.dateText}`}>
+                      {tile.date}
                     </span>
                   </div>
                 </div>
 
-                {/* Step Body */}
-                <div className="p-5 text-left">
-                  <h3 className="font-heading font-bold text-lg uppercase tracking-wide mb-2 flex items-center gap-2">
-                    <span>{step.title}</span>
-                  </h3>
-                  <p className="font-body text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {step.description}
-                  </p>
+                {/* Center / Middle Content Area */}
+                <div className="my-auto py-4">
+                  {tile.isCircled ? (
+                    /* The Circled "DUE DATE" Feature (Exact match to Reference Screenshot) */
+                    <div className="flex flex-col items-center justify-center text-center py-2">
+                      <div className="relative inline-flex items-center justify-center px-6 py-3">
+                        {/* Hand-drawn sketched red circle SVG */}
+                        <svg
+                          className="absolute inset-0 w-full h-full pointer-events-none stroke-[#C83838]"
+                          viewBox="0 0 180 76"
+                          fill="none"
+                        >
+                          <path
+                            d="M16,38 C16,16 68,7 112,7 C156,7 173,20 170,42 C165,64 128,71 84,71 C40,71 11,58 13,36 C15,18 62,10 106,10"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                        <span className="font-mono font-bold text-sm sm:text-base tracking-widest uppercase text-[#281D19]">
+                          DUE DATE
+                        </span>
+                      </div>
+                      <p className="text-xs font-mono font-bold uppercase text-[#C83838] mt-2">
+                        {tile.title}
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                        {tile.title}
+                      </h3>
+                      <p className={`text-xs sm:text-sm font-medium mt-1 ${tile.theme.metaText}`}>
+                        {tile.subtitle}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom Row: Checklist details */}
+                <div className="pt-4 border-t-0 space-y-1.5">
+                  {tile.details.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2 text-xs opacity-80"
+                    >
+                      <IconCheck className="w-3.5 h-3.5 shrink-0" stroke={2.5} />
+                      <span className="line-clamp-1">{item}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
+            );
+          })}
+        </div>
 
-              {/* Step Deliverable Tag */}
-              <div className="px-4 py-2.5 bg-muted border-t-[2px] border-foreground text-[11px] font-mono flex items-center gap-1.5 text-foreground font-semibold">
-                <CheckCircle className="w-3.5 h-3.5 text-secondary shrink-0" />
-                <span className="truncate">{step.deliverable}</span>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Bottom Calendar Footer Note */}
+        <div className="mt-12 sm:mt-16 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono opacity-60 select-none">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#281D19]" />
+            <span>Sprint Cadence: 10 Days from kickoff to verified production deploy</span>
+          </div>
+          <div>All deliverables version-controlled and tested</div>
+        </div>
       </div>
     </section>
   );

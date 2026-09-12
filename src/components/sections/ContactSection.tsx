@@ -1,23 +1,26 @@
 import { useState } from "react";
-import { Github, Twitter, Mail, Copy, Check, Send, Sparkles, MessageSquare, ArrowUpRight } from "lucide-react";
-import { BrutalButton } from "@/components/ui/BrutalButton";
-import { BrutalInput } from "@/components/ui/BrutalInput";
-import { BrutalTextarea } from "@/components/ui/BrutalTextarea";
-import { motion, AnimatePresence } from "framer-motion";
-import confetti from "canvas-confetti";
-import { fadeInUp, staggerContainer, viewportOnce } from "@/lib/motion";
+import {
+  IconBrandGithub,
+  IconBrandX,
+  IconMail,
+  IconCopy,
+  IconCheck,
+  IconArrowUpRight,
+  IconSend
+} from "@tabler/icons-react";
 
-const ContactSection = () => {
+export const ContactSection = () => {
   const [copied, setCopied] = useState(false);
-  const [formState, setFormState] = useState({ name: "", email: "", projectType: "Web App", message: "" });
+  const [projectType, setProjectType] = useState<string>("Web App");
+  const [formState, setFormState] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const socialLinks = [
-    { icon: Github, label: "GitHub", href: "https://github.com/emdevelopa", color: "hover:bg-foreground hover:text-background" },
-    { icon: Twitter, label: "Twitter / X", href: "https://x.com/Emwrld999", color: "hover:bg-secondary hover:text-secondary-foreground" },
-    { icon: Mail, label: "Email Directly", href: "mailto:olatunbossemma17@gmail.com", color: "hover:bg-accent hover:text-accent-foreground" },
-  ];
+  const projectTypes = ["Web App", "Smart Contract", "Mobile App", "Full-Stack"];
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText("olatunbossemma17@gmail.com");
@@ -33,250 +36,228 @@ const ContactSection = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-
-      // Trigger multi-color celebratory confetti explosion
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ["#FFE600", "#0066FF", "#FF3366", "#000000"],
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }, 800);
+      setFormState({ name: "", email: "", message: "" });
+    }, 700);
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-background relative overflow-hidden">
-      <div className="container">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="max-w-4xl mx-auto"
-        >
-          {/* Header */}
-          <div className="text-center mb-12">
-            <motion.span
-              variants={fadeInUp}
-              className="inline-block bg-foreground text-background px-4 py-1.5 font-heading font-bold text-xs uppercase tracking-wider mb-4 shadow-brutal border-[2px] border-foreground"
-            >
-              Get In Touch
-            </motion.span>
-            <motion.h2
-              variants={fadeInUp}
-              className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-[1.05] tracking-tight mb-4"
-            >
-              LET'S BUILD <br />
-              <span className="bg-primary px-3 py-1 border-[3px] border-foreground shadow-brutal inline-block mt-1">
-                SOMETHING GREAT
-              </span>
-            </motion.h2>
-            <motion.p
-              variants={fadeInUp}
-              className="font-body text-base md:text-lg text-muted-foreground max-w-xl mx-auto"
-            >
-              Ready to ship a high-performance web app, mobile system, or smart contract? Let's connect.
-            </motion.p>
-          </div>
+    <section className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-6xl mx-auto">
+        {/* Section Tag */}
+        <div className="mb-12 sm:mb-16">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#7C5A48] font-semibold block mb-2">
+            Transmission / 06
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#281D19]">
+            Let's Build Something Great.
+          </h2>
+          <p className="text-sm sm:text-base text-[#281D19]/70 mt-3 max-w-xl">
+            Have a project in mind, an architectural challenge, or a protocol to ship? Reach out directly.
+          </p>
+        </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-start">
-            {/* Direct Contact Info Card */}
-            <motion.div variants={fadeInUp} className="lg:col-span-5 space-y-6">
-              <div className="border-[3px] border-foreground bg-card p-6 shadow-brutal-lg">
-                <h3 className="font-heading font-bold text-xl uppercase tracking-wide mb-3 flex items-center gap-2">
-                  <MessageSquare className="w-5 h-5 text-primary" />
-                  Quick Connect
-                </h3>
-                <p className="font-body text-sm text-muted-foreground mb-6 leading-relaxed">
-                  Direct email or social messages are welcome. I typically respond within a few hours.
-                </p>
+        {/* 2-Column Responsive Layout (Inspired by References 1, 2 & 3) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Column: Dark Live Station & Telemetry Card (Inspired by Reference 2) */}
+          <div className="lg:col-span-5 bg-[#281D19] text-[#F4F1EA] rounded-[28px] sm:rounded-[36px] lg:rounded-[40px] p-6 sm:p-10 lg:p-12 flex flex-col justify-between select-none">
+            <div>
+              {/* Telemetry Status Pill (Inspired by Image 2) */}
+              <div className="inline-flex items-center gap-2.5 bg-[#3D2C26] px-4 py-2 rounded-full text-xs font-mono mb-8">
+                <span className="text-[#F4F1EA] font-semibold">Available for Work</span>
+              </div>
 
-                {/* Email Copy Card */}
-                <div className="border-[2px] border-foreground bg-muted p-3 mb-6 shadow-brutal">
-                  <div className="text-[11px] font-mono text-muted-foreground uppercase font-bold mb-1">
-                    Direct Email
+              {/* Identity & Direct Narrative */}
+              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#F4F1EA] leading-snug">
+                Production-grade logic. Rapid execution. Zero fluff.
+              </h3>
+              <p className="text-sm text-[#F4F1EA]/75 leading-relaxed mt-4">
+                Based in Accra (GMT+0) / remote worldwide. Specializing in high-concurrency web systems, verified smart contracts, and cross-platform native apps.
+              </p>
+
+              {/* Direct Quick-Copy Email Pill */}
+              <div className="mt-8 pt-4">
+                <span className="text-xs font-mono uppercase tracking-wider text-[#A36C52] block mb-2 font-semibold">
+                  Direct Channel
+                </span>
+                <div
+                  onClick={handleCopyEmail}
+                  className="bg-[#3D2C26] hover:bg-[#4E3932] transition-colors rounded-2xl p-4 flex items-center justify-between cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <IconMail className="w-4 h-4 text-[#DFA588] shrink-0" />
+                    <span className="text-xs sm:text-sm font-mono truncate text-[#F4F1EA]">
+                      olatunbossemma17@gmail.com
+                    </span>
                   </div>
-                  <div className="font-mono text-xs sm:text-sm font-bold truncate text-foreground mb-3">
-                    olatunbossemma17@gmail.com
-                  </div>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleCopyEmail}
-                    className="w-full flex items-center justify-center gap-2 border-[2px] border-foreground bg-card py-2 font-heading font-bold text-xs uppercase shadow-brutal hover:bg-primary transition-colors"
+
+                  <button
+                    className="p-1.5 rounded-lg bg-[#281D19] text-[#DFA588] shrink-0 transition-transform active:scale-95"
+                    aria-label="Copy email address"
                   >
                     {copied ? (
-                      <>
-                        <Check className="w-4 h-4 text-green-600 stroke-[3]" />
-                        <span>Copied to Clipboard!</span>
-                      </>
+                      <IconCheck className="w-4 h-4 text-green-400" />
                     ) : (
-                      <>
-                        <Copy className="w-4 h-4" />
-                        <span>Copy Email Address</span>
-                      </>
+                      <IconCopy className="w-4 h-4" />
                     )}
-                  </motion.button>
-                </div>
-
-                {/* Social Badges */}
-                <div className="space-y-2">
-                  <div className="text-[11px] font-mono text-muted-foreground uppercase font-bold mb-2">
-                    Social & Code Repos
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    {socialLinks.map((social, index) => (
-                      <motion.a
-                        key={index}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        whileHover={{ x: 4 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`flex items-center justify-between border-[2px] border-foreground bg-card px-4 py-2.5 font-heading font-bold text-xs uppercase shadow-brutal ${social.color} transition-colors`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <social.icon className="w-4 h-4" />
-                          {social.label}
-                        </span>
-                        <ArrowUpRight className="w-4 h-4" />
-                      </motion.a>
-                    ))}
-                  </div>
+                  </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Interactive Contact Form */}
-            <motion.div variants={fadeInUp} className="lg:col-span-7">
-              <div className="border-[3px] border-foreground bg-card p-6 md:p-8 shadow-brutal-xl">
-                <h3 className="font-heading font-bold text-2xl uppercase tracking-tight mb-2">
-                  Send a Message
-                </h3>
-                <p className="font-body text-xs sm:text-sm text-muted-foreground mb-6">
-                  Fill out the details below to start a conversation about your project.
-                </p>
+            {/* Social Channels Row */}
+            <div className="pt-10 mt-8 border-t-0 flex flex-wrap items-center gap-3">
+              <a
+                href="https://github.com/emdevelopa"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 bg-[#3D2C26] hover:bg-[#4E3932] text-[#F4F1EA] px-4 py-2.5 rounded-xl text-xs font-mono font-medium transition-colors"
+              >
+                <IconBrandGithub className="w-4 h-4" />
+                <span>GitHub</span>
+                <IconArrowUpRight className="w-3.5 h-3.5 opacity-60" />
+              </a>
 
-                <AnimatePresence mode="wait">
-                  {isSubmitted ? (
-                    <motion.div
-                      key="success"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="border-[3px] border-foreground bg-primary/20 p-8 text-center shadow-brutal space-y-4"
-                    >
-                      <div className="inline-flex p-3 bg-primary border-[2px] border-foreground shadow-brutal rounded-full">
-                        <Sparkles className="w-8 h-8 text-foreground" />
-                      </div>
-                      <h4 className="font-heading font-black text-2xl uppercase">
-                        Message Sent Successfully!
-                      </h4>
-                      <p className="font-body text-sm text-foreground/90 max-w-sm mx-auto">
-                        Thank you for reaching out, <span className="font-bold">{formState.name}</span>. I'll review your project details and get back to you shortly.
-                      </p>
-                      <BrutalButton
-                        size="sm"
-                        variant="default"
-                        onClick={() => {
-                          setIsSubmitted(false);
-                          setFormState({ name: "", email: "", projectType: "Web App", message: "" });
-                        }}
-                      >
-                        Send Another Note
-                      </BrutalButton>
-                    </motion.div>
-                  ) : (
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                      <div>
-                        <label className="block font-heading font-bold text-xs uppercase tracking-wider mb-1.5">
-                          Your Name *
-                        </label>
-                        <BrutalInput
-                          required
-                          placeholder="e.g. Alex Morgan"
-                          value={formState.name}
-                          onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block font-heading font-bold text-xs uppercase tracking-wider mb-1.5">
-                          Your Email *
-                        </label>
-                        <BrutalInput
-                          type="email"
-                          required
-                          placeholder="alex@example.com"
-                          value={formState.email}
-                          onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block font-heading font-bold text-xs uppercase tracking-wider mb-1.5">
-                          Project Type
-                        </label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {["Web App", "Smart Contract", "Mobile App"].map((type) => (
-                            <button
-                              type="button"
-                              key={type}
-                              onClick={() => setFormState({ ...formState, projectType: type })}
-                              className={`border-[2px] border-foreground py-2 text-xs font-heading font-bold uppercase transition-colors shadow-brutal ${
-                                formState.projectType === type
-                                  ? "bg-primary text-primary-foreground"
-                                  : "bg-muted text-foreground hover:bg-card"
-                              }`}
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block font-heading font-bold text-xs uppercase tracking-wider mb-1.5">
-                          Project Scope & Details *
-                        </label>
-                        <BrutalTextarea
-                          required
-                          rows={4}
-                          placeholder="Tell me about your goals, timelines, and technical requirements..."
-                          value={formState.message}
-                          onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                        />
-                      </div>
-
-                      <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
-                        <BrutalButton
-                          type="submit"
-                          size="lg"
-                          variant="default"
-                          disabled={isSubmitting}
-                          className="w-full gap-2"
-                        >
-                          {isSubmitting ? (
-                            <span>Sending...</span>
-                          ) : (
-                            <>
-                              <span>Send Project Inquiry</span>
-                              <Send className="w-4 h-4" />
-                            </>
-                          )}
-                        </BrutalButton>
-                      </motion.div>
-                    </form>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
+              <a
+                href="https://x.com/Emwrld999"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 bg-[#3D2C26] hover:bg-[#4E3932] text-[#F4F1EA] px-4 py-2.5 rounded-xl text-xs font-mono font-medium transition-colors"
+              >
+                <IconBrandX className="w-4 h-4" />
+                <span>Twitter / X</span>
+                <IconArrowUpRight className="w-3.5 h-3.5 opacity-60" />
+              </a>
+            </div>
           </div>
-        </motion.div>
+
+          {/* Right Column: Clean Project Inquiry Terminal (Inspired by Reference 1 & 3) */}
+          <div className="lg:col-span-7 bg-[#F4F1EA] text-[#281D19] rounded-[28px] sm:rounded-[36px] lg:rounded-[40px] p-6 sm:p-10 lg:p-12 flex flex-col justify-between select-none">
+            <div>
+              <div className="flex items-center justify-between pb-6">
+                <span className="text-xs font-mono uppercase tracking-widest text-[#7C5A48] font-semibold">
+                  Project Inquiry
+                </span>
+                <span className="text-xs font-mono opacity-50">INIT_FORM.REQ</span>
+              </div>
+
+              {isSubmitted ? (
+                <div className="py-16 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-[#281D19] text-[#F4F1EA] flex items-center justify-center mx-auto">
+                    <IconCheck className="w-6 h-6" />
+                  </div>
+                  <h4 className="text-2xl font-bold text-[#281D19]">
+                    Transmission Received.
+                  </h4>
+                  <p className="text-sm text-[#281D19]/70 max-w-sm mx-auto">
+                    Thank you for reaching out. I'll review your project scope and get back to you within 24 hours.
+                  </p>
+                  <button
+                    onClick={() => setIsSubmitted(false)}
+                    className="mt-6 text-xs font-mono underline font-semibold text-[#7C5A48] cursor-pointer"
+                  >
+                    Send another message
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+                  {/* Name Input */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase tracking-wider text-[#7C5A48] mb-2">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formState.name}
+                      onChange={(e) =>
+                        setFormState({ ...formState, name: e.target.value })
+                      }
+                      placeholder="e.g. Alex Rivera"
+                      className="w-full bg-[#EBE6DE] text-[#281D19] placeholder-[#281D19]/40 rounded-2xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:bg-[#E2DCD3] transition-all"
+                    />
+                  </div>
+
+                  {/* Email Input */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase tracking-wider text-[#7C5A48] mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formState.email}
+                      onChange={(e) =>
+                        setFormState({ ...formState, email: e.target.value })
+                      }
+                      placeholder="e.g. alex@studio.com"
+                      className="w-full bg-[#EBE6DE] text-[#281D19] placeholder-[#281D19]/40 rounded-2xl px-5 py-3.5 text-sm font-medium focus:outline-none focus:bg-[#E2DCD3] transition-all"
+                    />
+                  </div>
+
+                  {/* Project Type Pill Selector (Inspired by Reference 3) */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase tracking-wider text-[#7C5A48] mb-2.5">
+                      Project Domain
+                    </label>
+                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+                      {projectTypes.map((type) => {
+                        const isSelected = projectType === type;
+                        return (
+                          <button
+                            key={type}
+                            type="button"
+                            onClick={() => setProjectType(type)}
+                            className={`px-4 py-2.5 rounded-xl text-xs font-mono font-medium transition-all text-center ${isSelected
+                              ? "bg-[#281D19] text-[#F4F1EA] font-bold"
+                              : "bg-[#EBE6DE] text-[#281D19] hover:bg-[#DFD8CE]"
+                              }`}
+                          >
+                            {type}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Message Input */}
+                  <div>
+                    <label className="block text-xs font-mono font-bold uppercase tracking-wider text-[#7C5A48] mb-2">
+                      Project Scope &amp; Timeline
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      value={formState.message}
+                      onChange={(e) =>
+                        setFormState({ ...formState, message: e.target.value })
+                      }
+                      placeholder="Tell me about your goals, stack preferences, and target launch date..."
+                      className="w-full bg-[#EBE6DE] text-[#281D19] placeholder-[#281D19]/40 rounded-2xl p-5 text-sm font-medium focus:outline-none focus:bg-[#E2DCD3] transition-all resize-none"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="pt-2">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#281D19] hover:bg-black text-[#F4F1EA] font-bold text-sm tracking-wide uppercase px-7 py-4 rounded-2xl flex items-center justify-center gap-2 transition-transform active:scale-[0.99] cursor-pointer disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <span>Transmitting...</span>
+                      ) : (
+                        <>
+                          <span>Send Transmission</span>
+                          <IconSend className="w-4 h-4" />
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

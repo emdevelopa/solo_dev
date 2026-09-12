@@ -14,8 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        heading: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        sans: ['"Neue Montreal"', 'sans-serif'],
+        heading: ['"Neue Montreal"', 'sans-serif'],
+        body: ['"Neue Montreal"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="100%" height="100%">
+  <!-- Warm cream background card for pristine contrast in all browser chrome themes -->
+  <rect width="256" height="256" rx="64" fill="#F4F1EA"/>
+  <!-- Solo_Dev Signature Squircle Mark with Circle Cutout -->
+  <path fill="#281D19" fill-rule="evenodd" d="
+    M 88 32
+    L 168 32
+    A 56 56 0 0 1 224 88
+    L 224 168
+    A 56 56 0 0 1 168 224
+    L 88 224
+    A 56 56 0 0 1 32 168
+    L 32 88
+    A 56 56 0 0 1 88 32
+    Z
+    M 89.6 147.2
+    A 19.2 19.2 0 1 0 89.6 185.6
+    A 19.2 19.2 0 1 0 89.6 147.2
+    Z
+  "/>
+</svg>
