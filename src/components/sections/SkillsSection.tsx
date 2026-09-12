@@ -1,193 +1,219 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Shield, Server, Layout, Smartphone, Sparkles, CheckCircle2 } from "lucide-react";
-import { fadeInUp, staggerContainer, viewportOnce } from "@/lib/motion";
+import { IconCheck, IconCopy } from "@tabler/icons-react";
 
-const SkillsSection = () => {
-  const [selectedFilter, setSelectedFilter] = useState("all");
+interface SkillFile {
+  name: string;
+  ext: string;
+  level: "Expert" | "Advanced" | "Intermediate";
+  runtime: string;
+  desc: string;
+}
 
-  const skillCategories = [
-    {
-      id: "contracts",
-      title: "Smart Contract & Web3",
-      icon: Shield,
-      color: "bg-accent",
-      textColor: "text-accent-foreground",
-      badgeText: "Web3 Engineering",
-      skills: [
-        { name: "Solidity", level: "Expert" },
-        { name: "Hardhat", level: "Advanced" },
-        { name: "Foundry", level: "Advanced" },
-        { name: "Ethereum", level: "Expert" },
-        { name: "ERC-20 / ERC-721", level: "Expert" },
-        { name: "DeFi Protocols", level: "Advanced" },
-        { name: "Ethers.js / Web3.js", level: "Advanced" },
-      ],
-    },
-    {
-      id: "backend",
-      title: "Backend & Systems",
-      icon: Server,
-      color: "bg-secondary",
-      textColor: "text-secondary-foreground",
-      badgeText: "Server & Databases",
-      skills: [
-        { name: "Node.js", level: "Expert" },
-        { name: "Express", level: "Expert" },
-        { name: "Python", level: "Advanced" },
-        { name: "Django", level: "Advanced" },
-        { name: "MySQL", level: "Advanced" },
-        { name: "MongoDB", level: "Advanced" },
-        { name: "RESTful APIs", level: "Expert" },
-      ],
-    },
-    {
-      id: "web",
-      title: "Web App Development",
-      icon: Layout,
-      color: "bg-primary",
-      textColor: "text-primary-foreground",
-      badgeText: "Interactive UIs",
-      skills: [
-        { name: "React", level: "Expert" },
-        { name: "Next.js", level: "Expert" },
-        { name: "TypeScript", level: "Expert" },
-        { name: "Tailwind CSS", level: "Expert" },
-        { name: "Vue.js", level: "Intermediate" },
-        { name: "Vite", level: "Expert" },
-        { name: "Framer Motion", level: "Advanced" },
-      ],
-    },
-    {
-      id: "mobile",
-      title: "Mobile App Development",
-      icon: Smartphone,
-      color: "bg-foreground",
-      textColor: "text-background",
-      badgeText: "Cross-Platform",
-      skills: [
-        { name: "React Native", level: "Expert" },
-        { name: "Expo", level: "Advanced" },
-        { name: "Cross-Platform UI", level: "Expert" },
-        { name: "Native Modules", level: "Intermediate" },
-        { name: "State Management", level: "Expert" },
-        { name: "Mobile CI/CD", level: "Advanced" },
-      ],
-    },
-  ];
+interface SkillCategory {
+  id: string;
+  label: string;
+  folderName: string;
+  itemCount: number;
+  skills: SkillFile[];
+}
 
-  const filterButtons = [
-    { id: "all", label: "All Skills" },
-    { id: "contracts", label: "Smart Contracts" },
-    { id: "backend", label: "Backend" },
-    { id: "web", label: "Web Apps" },
-    { id: "mobile", label: "Mobile" },
-  ];
+const skillCategories: SkillCategory[] = [
+  {
+    id: "web3",
+    label: "Smart Contract & Web3",
+    folderName: "web3_protocols",
+    itemCount: 7,
+    skills: [
+      { name: "Solidity", ext: "sol", level: "Expert", runtime: "EVM", desc: "Gas-optimized smart contracts & DeFi architectures." },
+      { name: "Hardhat", ext: "config.ts", level: "Advanced", runtime: "Node.js", desc: "Automated test harnesses & deployment scripts." },
+      { name: "Foundry", ext: "toml", level: "Advanced", runtime: "Rust/EVM", desc: "Fuzz testing, invariant checks, and trace debugging." },
+      { name: "Ethereum", ext: "eth", level: "Expert", runtime: "Mainnet", desc: "Consensus mechanics, RPC endpoints, and state machines." },
+      { name: "ERC Standards", ext: "token.sol", level: "Expert", runtime: "ERC20/721", desc: "Custom tokens, allowance mechanics, and metadata URIs." },
+      { name: "DeFi Protocols", ext: "vault.sol", level: "Advanced", runtime: "AMM/Lending", desc: "Liquidity pools, yield routers, and flash loans." },
+      { name: "Ethers.js / Web3", ext: "provider.ts", level: "Advanced", runtime: "Client/RPC", desc: "Contract abstraction, wallet connect, and transaction signers." },
+    ],
+  },
+  {
+    id: "backend",
+    label: "Backend & Systems",
+    folderName: "backend_services",
+    itemCount: 7,
+    skills: [
+      { name: "Node.js", ext: "runtime.js", level: "Expert", runtime: "V8 Engine", desc: "Event-driven asynchronous microservices and APIs." },
+      { name: "Express", ext: "server.ts", level: "Expert", runtime: "HTTP/REST", desc: "Middleware pipelines, routing, and rate-limiting." },
+      { name: "Python", ext: "core.py", level: "Advanced", runtime: "CPython 3", desc: "Data processing, script automation, and algorithms." },
+      { name: "Django", ext: "models.py", level: "Advanced", runtime: "ORM / ASGI", desc: "Secure REST frameworks, admin tooling, and auth pipelines." },
+      { name: "MySQL", ext: "schema.sql", level: "Advanced", runtime: "Relational", desc: "Indexed schemas, query tuning, and ACID transactions." },
+      { name: "MongoDB", ext: "store.json", level: "Advanced", runtime: "Document Store", desc: "Flexible aggregations, caching, and distributed storage." },
+      { name: "RESTful APIs", ext: "openapi.json", level: "Expert", runtime: "HTTP/2", desc: "Strict contract design, idempotency, and versioning." },
+    ],
+  },
+  {
+    id: "web",
+    label: "Web App Development",
+    folderName: "client_engineering",
+    itemCount: 7,
+    skills: [
+      { name: "React", ext: "component.tsx", level: "Expert", runtime: "Fiber Engine", desc: "Concurrent rendering, custom hooks, and reactive UI." },
+      { name: "Next.js", ext: "page.tsx", level: "Expert", runtime: "SSR / SSG", desc: "Server components, edge routing, and bundle tuning." },
+      { name: "TypeScript", ext: "types.d.ts", level: "Expert", runtime: "Type Checker", desc: "Strict interfaces, generics, and compiler safety." },
+      { name: "Tailwind CSS", ext: "styles.css", level: "Expert", runtime: "JIT Engine", desc: "Custom token systems, responsive design, and animations." },
+      { name: "Vite", ext: "vite.config.ts", level: "Expert", runtime: "ESBuild", desc: "Lightning-fast HMR, Rollup chunking, and build tuning." },
+      { name: "Framer Motion", ext: "motion.ts", level: "Advanced", runtime: "Animation", desc: "Physics spring animations, transitions, and layout orchestration." },
+      { name: "Vue.js", ext: "app.vue", level: "Intermediate", runtime: "SFC", desc: "Reactive data models and component architecture." },
+    ],
+  },
+  {
+    id: "mobile",
+    label: "Mobile App Development",
+    folderName: "mobile_systems",
+    itemCount: 6,
+    skills: [
+      { name: "React Native", ext: "native.tsx", level: "Expert", runtime: "Hermes", desc: "Cross-platform mobile apps for iOS and Android." },
+      { name: "Expo", ext: "app.json", level: "Advanced", runtime: "EAS Pipeline", desc: "Managed workflows, OTA updates, and native build matrix." },
+      { name: "Cross-Platform UI", ext: "layout.tsx", level: "Expert", runtime: "Flexbox", desc: "Native touch gestures, safe area handling, and haptics." },
+      { name: "State Management", ext: "store.ts", level: "Expert", runtime: "Zustand/Redux", desc: "Predictable offline persistence and sync engines." },
+      { name: "Mobile CI/CD", ext: "deploy.yml", level: "Advanced", runtime: "Fastlane", desc: "Automated test flights, app store submissions, and signing." },
+      { name: "Native Modules", ext: "bridge.m", level: "Intermediate", runtime: "Objective-C/Java", desc: "Platform bridges and native hardware access." },
+    ],
+  },
+];
 
-  const filteredCategories = selectedFilter === "all"
-    ? skillCategories
-    : skillCategories.filter((cat) => cat.id === selectedFilter);
+export const SkillsSection = () => {
+  const [activeCategory, setActiveCategory] = useState<string>("web3");
+  const [copiedSkill, setCopiedSkill] = useState<string | null>(null);
+
+  const currentCategory =
+    skillCategories.find((c) => c.id === activeCategory) || skillCategories[0];
+
+  const handleCopySkill = (name: string) => {
+    navigator.clipboard.writeText(name);
+    setCopiedSkill(name);
+    setTimeout(() => setCopiedSkill(null), 1800);
+  };
 
   return (
-    <section id="skills" className="py-20 md:py-32 border-b-[3px] border-foreground bg-muted relative overflow-hidden">
-      <div className="container">
+    <section id="skills" className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-6xl mx-auto">
         {/* Section Header */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="mb-12"
-        >
-          <motion.div variants={fadeInUp} className="flex items-center gap-2 mb-4">
-            <span className="inline-block bg-foreground text-background px-4 py-1.5 font-heading font-bold text-xs uppercase tracking-wider shadow-brutal border-[2px] border-foreground">
-              Technical Arsenal
-            </span>
-          </motion.div>
-          <motion.h2
-            variants={fadeInUp}
-            className="text-4xl md:text-5xl lg:text-6xl font-heading font-black leading-[1.05] tracking-tight"
-          >
-            WHAT I <span className="bg-primary px-3 py-1 border-[3px] border-foreground shadow-brutal inline-block">WORK</span> WITH
-          </motion.h2>
-        </motion.div>
-
-        {/* Filter Pills */}
-        <div className="flex flex-wrap gap-2.5 mb-10">
-          {filterButtons.map((btn) => (
-            <motion.button
-              key={btn.id}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedFilter(btn.id)}
-              className={`font-heading font-bold text-xs sm:text-sm uppercase tracking-wider px-4 py-2 border-[3px] border-foreground shadow-brutal transition-colors ${
-                selectedFilter === btn.id
-                  ? "bg-primary text-primary-foreground font-black"
-                  : "bg-card text-foreground hover:bg-card/70"
-              }`}
-            >
-              {btn.label}
-            </motion.button>
-          ))}
+        <div className="mb-12 sm:mb-16">
+          <span className="text-xs font-mono uppercase tracking-widest text-[#7C5A48] font-semibold block mb-2">
+            Tooling / 02
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#281D19]">
+            Skills as Executable Files.
+          </h2>
+          <p className="text-sm sm:text-base text-[#281D19]/70 mt-3 max-w-xl">
+            Modular engineering competencies organized by domain. Well-spaced and structured for zero regression.
+          </p>
         </div>
 
-        {/* Skills Grid */}
-        <motion.div
-          layout
-          className="grid md:grid-cols-2 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredCategories.map((category) => (
-              <motion.div
-                layout
+        {/* Spacious Category Folders Bar */}
+        <div className="flex overflow-x-auto no-scrollbar sm:flex-wrap items-center gap-2.5 sm:gap-4 mb-10 sm:mb-16 pb-2 sm:pb-0 select-none">
+          {skillCategories.map((category) => {
+            const isActive = activeCategory === category.id;
+            return (
+              <button
                 key={category.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                whileHover={{ x: -4, y: -4 }}
-                className="border-[3px] border-foreground bg-card shadow-brutal-lg overflow-hidden flex flex-col justify-between"
+                onClick={() => setActiveCategory(category.id)}
+                className={`relative px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold tracking-wide transition-all whitespace-nowrap shrink-0 ${
+                  isActive
+                    ? "bg-[#281D19] text-[#F4F1EA]"
+                    : "bg-[#DFD8CE] text-[#281D19] hover:bg-[#D5CCC0]"
+                }`}
               >
-                {/* Category Header */}
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  <span className="font-mono text-xs opacity-60">
+                    {category.itemCount} files
+                  </span>
+                  <span>{category.label}</span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Main Spacious Stage: Fanned Out Dog-Eared Skill Files */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 items-stretch">
+          {currentCategory.skills.map((skill) => {
+            const isCopied = copiedSkill === skill.name;
+            return (
+              <div
+                key={skill.name}
+                onClick={() => handleCopySkill(skill.name)}
+                className="group relative bg-[#F4F1EA] text-[#281D19] rounded-2xl p-6 sm:p-8 flex flex-col justify-between cursor-pointer select-none transition-transform duration-300 hover:-translate-y-1"
+                style={{
+                  clipPath:
+                    "polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 0 100%)",
+                }}
+              >
+                {/* Dog-Eared Fold Triangle Flap */}
+                <div 
+                  className="absolute top-0 right-0 w-6 h-6 bg-[#DFD8CE] pointer-events-none"
+                  style={{
+                    clipPath: "polygon(0 0, 0 100%, 100% 100%)",
+                  }}
+                />
+
+                {/* Top Row: File Meta & Dog-Ear Area */}
                 <div>
-                  <div className={`${category.color} ${category.textColor} px-6 py-4 border-b-[3px] border-foreground flex items-center justify-between`}>
-                    <div className="flex items-center gap-3">
-                      <category.icon className="w-6 h-6 stroke-[2.5]" />
-                      <h3 className="font-heading font-bold text-xl uppercase tracking-wide">
-                        {category.title}
-                      </h3>
-                    </div>
-                    <span className="font-heading font-bold text-xs uppercase bg-background/20 px-2 py-1 border border-current">
-                      {category.badgeText}
-                    </span>
+                  <div className="flex items-center justify-between text-xs font-mono opacity-50 mb-6 pr-4">
+                    <span>SKILL_FILE</span>
+                    <span>{skill.runtime}</span>
                   </div>
 
-                  {/* Skills List with Tags & Level Badges */}
-                  <div className="p-6 bg-card">
-                    <div className="flex flex-wrap gap-2.5">
-                      {category.skills.map((skill, skillIndex) => (
-                        <motion.div
-                          key={skillIndex}
-                          whileHover={{ scale: 1.08, rotate: skillIndex % 2 === 0 ? 1 : -1 }}
-                          className="inline-flex items-center gap-1.5 border-[2px] border-foreground bg-background px-3 py-1.5 font-body text-xs sm:text-sm font-semibold shadow-brutal hover:bg-primary transition-colors cursor-default"
-                        >
-                          <CheckCircle2 className="w-3.5 h-3.5 text-secondary stroke-[3]" />
-                          <span>{skill.name}</span>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </div>
+                  {/* Skill Name */}
+                  <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#281D19] group-hover:text-black transition-colors">
+                    {skill.name}
+                  </h3>
+
+                  {/* Filename with extension */}
+                  <p className="text-xs font-mono text-[#7C5A48] font-semibold mt-1">
+                    {skill.name.toLowerCase().replace(/\s+/g, "_")}.{skill.ext}
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-xs sm:text-sm text-[#281D19]/75 leading-relaxed mt-4">
+                    {skill.desc}
+                  </p>
                 </div>
 
-                {/* Footer Count */}
-                <div className="px-6 py-2.5 bg-muted/60 border-t-[2px] border-foreground flex items-center justify-between font-mono text-xs text-muted-foreground">
-                  <span>{category.skills.length} core technologies</span>
-                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+                {/* Bottom Row: Level Tag & Copy Popover Pill */}
+                <div className="pt-8 mt-auto flex items-center justify-between text-xs border-t-0">
+                  <span className="bg-[#EBE6DE] text-[#281D19] px-3 py-1 rounded-full font-mono font-medium">
+                    {skill.level}
+                  </span>
+
+                  {/* Interactive Copy Pill (Inspired by Image 1) */}
+                  <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity font-mono text-[11px]">
+                    {isCopied ? (
+                      <>
+                        <IconCheck className="w-3.5 h-3.5 text-green-700" />
+                        <span className="text-green-700 font-bold">Copied</span>
+                      </>
+                    ) : (
+                      <>
+                        <IconCopy className="w-3.5 h-3.5" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Folder Drawer Indicator (Inspired by Image 2 & 3) */}
+        <div className="mt-16 sm:mt-20 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono opacity-60 select-none">
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-[#281D19]" />
+            <span>
+              Directory: ~/{currentCategory.folderName}/ ({currentCategory.itemCount} items loaded)
+            </span>
+          </div>
+          <div>Click any card to copy reference</div>
+        </div>
       </div>
     </section>
   );
