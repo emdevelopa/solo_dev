@@ -27,7 +27,7 @@ const stats = [
 
 export const AboutSection = () => {
   return (
-    <section id="about" className="w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-6xl mx-auto">
         {/* Section Headline */}
         <div className="mb-10 sm:mb-12">

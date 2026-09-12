@@ -102,7 +102,7 @@ const GlassSection = ({ children, id, isFirst = false }: GlassSectionProps) => {
     <div
       ref={sectionRef}
       id={id}
-      className="w-full flex justify-center will-change-[filter,transform,opacity]"
+      className="w-full flex justify-center will-change-[filter,transform,opacity] scroll-mt-28 sm:scroll-mt-36"
     >
       {children}
     </div>
@@ -113,6 +113,17 @@ const Index = () => {
   useEffect(() => {
     // Refresh ScrollTrigger calculations after initial layout mount
     ScrollTrigger.refresh();
+
+    // If there is an initial URL hash sitelink, smoothly scroll to it once mounted
+    if (window.location.hash) {
+      const targetId = window.location.hash.replace("#", "");
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 350);
+    }
   }, []);
 
   return (

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { 
-  IconArrowLeft, 
-  IconArrowRight, 
-  IconRotateClockwise, 
-  IconHome, 
-  IconLock, 
-  IconX 
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconRotateClockwise,
+  IconHome,
+  IconLock,
+  IconX
 } from "@tabler/icons-react";
 
 interface NavLink {
@@ -89,10 +89,12 @@ export const Header = () => {
     setHistoryIndex((prev) => prev + 1);
 
     if (!sectionId) {
+      window.history.pushState(null, "", "/");
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
+    window.history.pushState(null, "", `#${sectionId}`);
     const target = document.getElementById(sectionId);
     if (target) {
       target.scrollIntoView({ behavior: "smooth" });
@@ -132,8 +134,8 @@ export const Header = () => {
 
   return (
     <header className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 sm:px-6 pointer-events-none">
-      <div 
-        ref={headerContainerRef} 
+      <div
+        ref={headerContainerRef}
         className="pointer-events-auto flex flex-col items-start w-full max-w-4xl lg:max-w-5xl will-change-[filter,transform,opacity]"
       >
         {/* Top Tab Row */}
@@ -218,9 +220,8 @@ export const Header = () => {
 
               <button
                 onClick={handleRefresh}
-                className={`p-1.5 sm:p-2 rounded-full text-black hover:bg-neutral-100 transition-colors ${
-                  isRefreshing ? "animate-spin" : ""
-                }`}
+                className={`p-1.5 sm:p-2 rounded-full text-black hover:bg-neutral-100 transition-colors ${isRefreshing ? "animate-spin" : ""
+                  }`}
                 aria-label="Refresh"
               >
                 <IconRotateClockwise className="w-4 h-4 sm:w-4.5 sm:h-4.5" stroke={2.2} />
@@ -239,7 +240,7 @@ export const Header = () => {
             <div className="sm:hidden flex items-center gap-1.5 text-xs text-neutral-400 font-mono pr-2">
               <IconLock className="w-3 h-3 text-neutral-500" stroke={2.2} />
               <span className="text-neutral-600 font-semibold truncate max-w-[120px]">
-                {activeSection ? `#${activeSection}` : "solo-dev.me"}
+                {activeSection ? `#${activeSection}` : "solo-dev"}
               </span>
             </div>
           </div>
@@ -255,22 +256,25 @@ export const Header = () => {
               <span className="text-neutral-700 hidden lg:inline">|</span>
             </div>
 
-            {/* Nav Links */}
-            <nav className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm shrink-0 font-medium w-full sm:w-auto justify-around sm:justify-start">
+            {/* Nav Links - Crawlable Sitelinks for Search Engines */}
+            <nav aria-label="Main Navigation" className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm shrink-0 font-medium w-full sm:w-auto justify-around sm:justify-start">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.id;
                 return (
-                  <button
+                  <a
                     key={link.id}
-                    onClick={() => navigateTo(link.id)}
-                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl transition-all whitespace-nowrap ${
-                      isActive
+                    href={link.href}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigateTo(link.id);
+                    }}
+                    className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl transition-all whitespace-nowrap ${isActive
                         ? "bg-white text-black font-bold"
                         : "text-neutral-300 hover:text-white hover:bg-neutral-900"
-                    }`}
+                      }`}
                   >
                     {link.label}
-                  </button>
+                  </a>
                 );
               })}
             </nav>

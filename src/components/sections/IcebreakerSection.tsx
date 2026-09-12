@@ -119,7 +119,7 @@ export const IcebreakerSection = () => {
   };
 
   return (
-    <section id="icebreaker" className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="mb-12 sm:mb-16 flex flex-col sm:flex-row sm:items-end justify-between gap-6">

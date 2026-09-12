@@ -53,8 +53,8 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Navigation Links */}
-          <div className="md:col-span-4 space-y-3">
+          {/* Quick Navigation Sitelinks */}
+          <nav aria-label="Footer Sitelinks" className="md:col-span-4 space-y-3">
             <span className="text-xs font-mono uppercase tracking-widest text-[#A36C52] font-semibold block mb-2">
               Navigation
             </span>
@@ -69,7 +69,7 @@ export const Footer = () => {
                 </a>
               ))}
             </div>
-          </div>
+          </nav>
 
           {/* Social Channels & Direct Reach */}
           <div className="md:col-span-3 space-y-3">

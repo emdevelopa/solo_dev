@@ -41,7 +41,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-20 sm:py-28 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-6xl mx-auto">
         {/* Section Tag */}
         <div className="mb-12 sm:mb-16">
