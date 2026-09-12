@@ -121,7 +121,7 @@ const Index = () => {
       <Header />
 
       {/* Main Content with GSAP Glassmorphic Blur In/Out Transitions */}
-      <main className="flex-1 flex flex-col items-center pt-24 sm:pt-32 pb-20 sm:pb-24 w-full overflow-x-hidden">
+      <main className="flex-1 flex flex-col items-center pt-36 sm:pt-32 pb-20 sm:pb-24 w-full overflow-x-hidden">
         <GlassSection isFirst>
           <HeroSection />
         </GlassSection>

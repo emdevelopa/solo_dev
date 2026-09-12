@@ -254,7 +254,7 @@ export const HeroSection = () => {
   }, []);
 
   return (
-    <section className="w-full min-h-[calc(100vh-6rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <section className="w-full min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-8 sm:pb-12">
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-stretch">
         {/* Left Card: Cream / Ecru Minimal Identity */}
         <div 
